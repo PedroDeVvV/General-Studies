@@ -1,0 +1,10 @@
+<h1>Olá mundo</h1>
+<p>O nome do usuário é {{user.name}} {{user.surname}} e ele tem {{user.age}}</p>
+<p>{{word}}</p>
+{{#if auth}}
+  <p>O usuário está autenticado,
+    <a href="/dashboard">clique aqui</a>
+    para acessar a área de membros</p>
+{{else}}
+  <p>Se autentique para acessar a área de membros</p>
+{{/if}}
