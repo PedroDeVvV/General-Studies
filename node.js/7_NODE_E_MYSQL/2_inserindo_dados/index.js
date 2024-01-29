@@ -6,31 +6,31 @@ const port = 3000;
 
 app.use(
   express.urlencoded({
-    extended:true
+    extended: true,
   })
-)
+);
 
-app.use(express.json())
+app.use(express.json());
 
 app.engine("handlebars", exphs.engine());
 app.set("view engine", "handlebars");
 
 app.use(express.static("public"));
 
-app.post('/books/insertbook', (req,res) => {
-  const title = req.body.title
-  const pageqty = req.body.pagesqty
-  
-  const query = `INSERT INTO books(title, pageqty) VALUES('${title}', '${pageqty}')`
+app.post("/books/insertbook", (req, res) => {
+  const title = req.body.title;
+  const pageqty = req.body.pagesqty;
+
+  const query = `INSERT INTO books(title, pageqty) VALUES('${title}', '${pageqty}')`;
 
   conn.query(query, function (err) {
-    if(err) {
-      console.log(err)
-      return
+    if (err) {
+      console.log(err);
+      return;
     }
-    res.redirect('/')
-  })
-})
+    res.redirect("/");
+  });
+});
 
 app.get("/", (req, res) => {
   res.render("home");
