@@ -34,7 +34,7 @@ app.post("/books/insertbook", (req, res) => {
 
 app.get("/", (req, res) => {
   res.render("home");
-});
+}); 
 
 const conn = mysql.createConnection({
   host: "localhost",
