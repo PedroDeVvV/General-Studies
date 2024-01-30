@@ -1,0 +1,18 @@
+<h1>Atualizar:</h1>
+
+<form action="/books/edit/{{book.id}}" method="POST" class="form">
+  <div class="form-control">
+    <a href="/books">Ver livros cadastrados</a>
+    <label for="title">Título:</label>
+    <input type="text" name="title" value="{{book.title}}"/>
+  </div>
+  <div class="form-control">
+    <label for="pagesqty">Páginas:</label>
+    <input
+      type="number"
+      name="pagesqty"
+      value="{{book.pageqty}}"
+    />
+  </div>
+  <button type="submit">Editar</button>
+</form>
