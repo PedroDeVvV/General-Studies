@@ -3,6 +3,7 @@ const app = express();
 const exphs = require("express-handlebars");
 const mysql = require("mysql");
 const port = 3000;
+const pool = require("./db/conn");
 
 app.use(
   express.urlencoded({
@@ -19,6 +20,20 @@ app.use(express.static("public"));
 
 // rotas
 
+app.post("/books/remove/:id", (req, res) => {
+  const id = req.params.id;
+  const sql = `DELETE FROM books WHERE id = ${id}`;
+
+  pool.query(sql, function (err) {
+    if (err) {
+      console.log(err);
+      return;
+    }
+
+    res.redirect("/books");
+  });
+});
+
 app.post("/books/updatebook", (req, res) => {
   const id = req.body.id;
   const title = req.body.title;
@@ -26,7 +41,7 @@ app.post("/books/updatebook", (req, res) => {
   console.log("page: ", req.body);
   const sql = `UPDATE books SET title = '${title}', pageqty = '${pageqty}' where id = ${id}`;
   console.log(sql);
-  conn.query(sql, function (err) {
+  pool.query(sql, function (err) {
     if (err) {
       console.log("oi?");
       console.log(err);
@@ -42,7 +57,7 @@ app.get("/books/edit/:id", (req, res) => {
 
   const sql = `SELECT * FROM books WHERE id = ${id}`;
 
-  conn.query(sql, function (err, data) {
+  pool.query(sql, function (err, data) {
     if (err) {
       console.log(err);
       return;
@@ -59,7 +74,7 @@ app.get("/books/:id", (req, res) => {
 
   const sql = `SELECT * FROM books WHERE id = ${id}`;
 
-  conn.query(sql, function (err, data) {
+  pool.query(sql, function (err, data) {
     if (err) {
       console.log(err);
       return;
@@ -73,7 +88,7 @@ app.get("/books/:id", (req, res) => {
 app.get("/books", (req, res) => {
   const query = "SELECT * FROM books";
 
-  conn.query(query, function (err, data) {
+  pool.query(query, function (err, data) {
     if (err) {
       console.log(err);
       return;
@@ -88,9 +103,10 @@ app.post("/books/insertbook", (req, res) => {
   const title = req.body.title;
   const pageqty = req.body.pagesqty;
 
-  const query = `INSERT INTO books(title, pageqty) VALUES('${title}', '${pageqty}')`;
+  const query = `INSERT INTO books(??, ??) VALUES(?, ?)`;
+  const data = ["title", "pageqty", title, pageqty];
 
-  conn.query(query, function (err) {
+  pool.query(query, data, function (err) {
     if (err) {
       console.log(err);
       return;
@@ -103,22 +119,4 @@ app.get("/", (req, res) => {
   res.render("home");
 });
 
-const conn = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "estudos",
-});
-
-conn.connect(function (err) {
-  if (err) {
-    console.log(err);
-    return;
-  }
-
-  console.log("Conectou ao MySQL");
-
-  app.listen(port, () => {
-    console.log(`Running on port ${port}`);
-  });
-});
+app.listen(3000);

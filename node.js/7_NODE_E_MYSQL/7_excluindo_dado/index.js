@@ -19,6 +19,20 @@ app.use(express.static("public"));
 
 // rotas
 
+app.post("/books/remove/:id", (req, res) => {
+  const id = req.params.id;
+  const sql = `DELETE FROM books WHERE id = ${id}`;
+
+  conn.query(sql, function(err) {
+    if(err) {
+      console.log(err)
+      return
+    }
+
+    res.redirect('/books');
+  })
+});
+
 app.post("/books/updatebook", (req, res) => {
   const id = req.body.id;
   const title = req.body.title;
