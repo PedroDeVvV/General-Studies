@@ -125,18 +125,121 @@ function doSomething(info: number | boolean) {
   console.log("Não foi passado um número");
 }
 
-doSomething(5)
-doSomething(true)
+doSomething(5);
+doSomething(true);
 
 //generics
-function showArrayItens<T>(arr: T[]) {
-    arr.forEach((item) => {
-        console.log(`ITEM: ${item}`)
-    })
+function showArrayItems<T>(arr: T[]) {
+  arr.forEach((item) => {
+    console.log(`ITEM: ${item}`);
+  });
 }
 
-const items = [1,2,3,3]
-const letter = ['a', 'b', 'c', 'd']
+const items = [1, 2, 3, 3];
+const letter = ["a", "b", "c", "d"];
 
-showArrayItens(items)
-showArrayItens(letter)
+showArrayItems(items);
+showArrayItems(letter);
+
+class User {
+  name;
+  role;
+  isApproved;
+
+  constructor(name: string, role: string, isApproved: boolean) {
+    this.name = name;
+    this.role = role;
+    this.isApproved = isApproved;
+  }
+
+  showUserName() {
+    console.log(`O nome do usuario é ${this.name}`);
+  }
+
+  showUserAge(canShow: number) {
+    if (canShow) {
+      console.log(`${this.name} tem ${canShow} anos`);
+      return;
+    }
+    console.log("Idade não foi informada no padrão correto");
+  }
+}
+
+const zeca = new User("Zeca", "Admin", true);
+const leana = new User("Leana", "User", true);
+
+console.log(zeca);
+
+zeca.showUserName();
+leana.showUserName();
+leana.showUserAge(22);
+
+
+//interfaces em classes
+interface Vehicle {
+  brand: string
+  showBrand(): void
+}
+
+class Car implements Vehicle {
+
+  brand
+  wheels
+
+  constructor(brand: string, wheels: number) {
+    this.brand = brand
+    this.wheels = wheels
+  }
+
+  showBrand (): void {
+    console.log(`A marca do carro é: ${this.brand}`)
+  }
+}
+
+const fusca = new Car("VW", 4)
+fusca.showBrand()
+const g63 = new Car("MERCEDES BENZ", 6)
+g63.showBrand()
+
+
+//herança
+class SuperCar extends Car {
+  engine
+
+  constructor(brand:string, wheels: number, engine: number) {
+    super(brand, wheels)
+    this.engine = engine
+  }
+
+  showCarName(): void {
+    console.log(`A marca do carro é ${this.brand}, possui ${this.wheels} rodas e um motor ${this.engine}`)
+  }
+}
+
+const rs7 = new SuperCar("Audi", 4, 2.5)
+
+console.log(rs7)
+rs7.showCarName()
+
+//decorators
+function BaseParameters () {
+  return function<T extends {new (...args: any[]): {}}>(constructor: T) {
+    return class extends constructor {
+      id = Math.random()
+      createdAt = new Date();
+    }
+  }
+}
+
+@BaseParameters()
+class Person {
+  name
+
+  constructor(name: string) {
+    this.name = name
+  }
+}
+
+const sam = new Person("Sam")
+
+console.log(sam)

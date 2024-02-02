@@ -1,4 +1,10 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 let x = 10;
 x = 20;
 let firstName = "Pedro";
@@ -80,12 +86,81 @@ function doSomething(info) {
 }
 doSomething(5);
 doSomething(true);
-function showArrayItens(arr) {
+function showArrayItems(arr) {
     arr.forEach((item) => {
         console.log(`ITEM: ${item}`);
     });
 }
 const items = [1, 2, 3, 3];
-const letter = ['a', 'b', 'c', 'd'];
-showArrayItens(items);
-showArrayItens(letter);
+const letter = ["a", "b", "c", "d"];
+showArrayItems(items);
+showArrayItems(letter);
+class User {
+    constructor(name, role, isApproved) {
+        this.name = name;
+        this.role = role;
+        this.isApproved = isApproved;
+    }
+    showUserName() {
+        console.log(`O nome do usuario é ${this.name}`);
+    }
+    showUserAge(canShow) {
+        if (canShow) {
+            console.log(`${this.name} tem ${canShow} anos`);
+            return;
+        }
+        console.log("Idade não foi informada no padrão correto");
+    }
+}
+const zeca = new User("Zeca", "Admin", true);
+const leana = new User("Leana", "User", true);
+console.log(zeca);
+zeca.showUserName();
+leana.showUserName();
+leana.showUserAge(22);
+class Car {
+    constructor(brand, wheels) {
+        this.brand = brand;
+        this.wheels = wheels;
+    }
+    showBrand() {
+        console.log(`A marca do carro é: ${this.brand}`);
+    }
+}
+const fusca = new Car("VW", 4);
+fusca.showBrand();
+const g63 = new Car("MERCEDES BENZ", 6);
+g63.showBrand();
+class SuperCar extends Car {
+    constructor(brand, wheels, engine) {
+        super(brand, wheels);
+        this.engine = engine;
+    }
+    showCarName() {
+        console.log(`A marca do carro é ${this.brand}, possui ${this.wheels} rodas e um motor ${this.engine}`);
+    }
+}
+const rs7 = new SuperCar("Audi", 4, 2.5);
+console.log(rs7);
+rs7.showCarName();
+function BaseParameters() {
+    return function (constructor) {
+        return class extends constructor {
+            constructor() {
+                super(...arguments);
+                this.id = Math.random();
+                this.createdAt = new Date();
+            }
+        };
+    };
+}
+let Person = class Person {
+    constructor(name) {
+        this.name = name;
+    }
+};
+Person = __decorate([
+    BaseParameters()
+], Person);
+const sam = new Person("Sam");
+console.log(sam);
