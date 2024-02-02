@@ -21,6 +21,22 @@ app.use(express.static("public"));
 
 // rotas
 
+app.post("/users/delete/:id", async (req, res) => {
+  const id = req.params.id;
+console.log(id)
+  await User.destroy({ where: { id: id } });
+  res.redirect('/')
+});
+
+app.get("/users/:id", async (req, res) => {
+  const id = req.params.id;
+
+  const user = await User.findOne({ raw: true, where: { id: id } });
+  console.log(user);
+
+  res.render("userview", { user });
+});
+
 app.post("/users/create", async (req, res) => {
   const name = req.body.name;
   const occupation = req.body.occupation;
@@ -43,12 +59,10 @@ app.get("/users/create", (req, res) => {
 app.get("/", function (req, res) {
   User.findAll({ raw: true })
     .then((users) => {
-      console.log(users);
       res.render("home", { users: users });
     })
     .catch((err) => console.log(err));
 });
-
 conn
   .sync()
   .then(() => {
