@@ -5,6 +5,7 @@ const port = 3000;
 const conn = require("./db/conn");
 
 const User = require("./models/User");
+const Address = require("./models/Address");
 
 app.use(
   express.urlencoded({
@@ -20,6 +21,60 @@ app.set("view engine", "handlebars");
 app.use(express.static("public"));
 
 // rotas
+
+app.post("/address/create", async (req, res) => {
+  const userId = req.body.UserId;
+  const street = req.body.street;
+  const number = req.body.number;
+  const city = req.body.city;
+
+  const address = {
+    userId,
+    street,
+    number,
+    city,
+  };
+  try {
+    await Address.create(address);
+    res.redirect(`/users/edit/${userId}`)
+  } catch (err) {
+    console.log(`Error on create adress: ${err}`);
+  }
+});
+
+app.post("/users/update", async (req, res) => {
+  const id = req.body.id;
+  const name = req.body.name;
+  const occupation = req.body.occupation;
+  let newsletter = req.body.newsletter;
+
+  if (newsletter === "on") {
+    newsletter = true;
+  } else {
+    newsletter = false;
+  }
+
+  const userData = {
+    id,
+    name,
+    occupation,
+    newsletter,
+  };
+
+  await User.update(userData, { where: { id: id } });
+  res.redirect("/");
+});
+
+app.get("/users/edit/:id", async (req, res) => {
+  const id = req.params.id;
+
+  const user = await User.findOne({ raw: true, where: { id: id } });
+  res.render("useredit", { user });
+});
+
+app.get("/users/create", (req, res) => {
+  res.render("adduser");
+});
 
 app.post("/users/delete/:id", async (req, res) => {
   const id = req.params.id;
@@ -52,10 +107,6 @@ app.post("/users/create", async (req, res) => {
   res.redirect("/");
 });
 
-app.get("/users/create", (req, res) => {
-  res.render("adduser");
-});
-
 app.get("/", function (req, res) {
   User.findAll({ raw: true })
     .then((users) => {
@@ -65,6 +116,8 @@ app.get("/", function (req, res) {
 });
 conn
   .sync()
+  // .sync({force: true})
+  // force:true restaura todas as entidades
   .then(() => {
     app.listen(3000);
   })

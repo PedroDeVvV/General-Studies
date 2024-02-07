@@ -174,72 +174,71 @@ zeca.showUserName();
 leana.showUserName();
 leana.showUserAge(22);
 
-
 //interfaces em classes
 interface Vehicle {
-  brand: string
-  showBrand(): void
+  brand: string;
+  showBrand(): void;
 }
 
 class Car implements Vehicle {
-
-  brand
-  wheels
+  brand;
+  wheels;
 
   constructor(brand: string, wheels: number) {
-    this.brand = brand
-    this.wheels = wheels
+    this.brand = brand;
+    this.wheels = wheels;
   }
 
-  showBrand (): void {
-    console.log(`A marca do carro é: ${this.brand}`)
+  showBrand(): void {
+    console.log(`A marca do carro é: ${this.brand}`);
   }
 }
 
-const fusca = new Car("VW", 4)
-fusca.showBrand()
-const g63 = new Car("MERCEDES BENZ", 6)
-g63.showBrand()
-
+const fusca = new Car("VW", 4);
+fusca.showBrand();
+const g63 = new Car("MERCEDES BENZ", 6);
+g63.showBrand();
 
 //herança
 class SuperCar extends Car {
-  engine
+  engine;
 
-  constructor(brand:string, wheels: number, engine: number) {
-    super(brand, wheels)
-    this.engine = engine
+  constructor(brand: string, wheels: number, engine: number) {
+    super(brand, wheels);
+    this.engine = engine;
   }
 
   showCarName(): void {
-    console.log(`A marca do carro é ${this.brand}, possui ${this.wheels} rodas e um motor ${this.engine}`)
+    console.log(
+      `A marca do carro é ${this.brand}, possui ${this.wheels} rodas e um motor ${this.engine}`
+    );
   }
 }
 
-const rs7 = new SuperCar("Audi", 4, 2.5)
+const rs7 = new SuperCar("Audi", 4, 2.5);
 
-console.log(rs7)
-rs7.showCarName()
+console.log(rs7);
+rs7.showCarName();
 
 //decorators
-function BaseParameters () {
-  return function<T extends {new (...args: any[]): {}}>(constructor: T) {
+function BaseParameters() {
+  return function <T extends { new (...args: any[]): {} }>(constructor: T) {
     return class extends constructor {
-      id = Math.random()
+      id = Math.random();
       createdAt = new Date();
-    }
-  }
+    };
+  };
 }
 
 @BaseParameters()
 class Person {
-  name
+  name;
 
   constructor(name: string) {
-    this.name = name
+    this.name = name;
   }
 }
 
-const sam = new Person("Sam")
+const sam = new Person("Sam");
 
-console.log(sam)
+console.log(sam);
