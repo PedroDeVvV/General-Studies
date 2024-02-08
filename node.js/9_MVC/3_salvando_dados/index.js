@@ -7,8 +7,11 @@ const conn = require("./db/conn");
 
 const Task = require("./models/Task");
 
+const taskRoutes = require('./routes/taskRoutes')
+
 app.engine("handlebars", exphbs.engine()); //especifica com template engine estou usando
 app.set("view engine", "handlebars"); //express usará handlebars como mecanismo de visualização
+app.use('/tasks', taskRoutes)
 
 app.use(
   express.urlencoded({
