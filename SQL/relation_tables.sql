@@ -67,3 +67,45 @@ SELECT * FROM clientes;
 
 SELECT nome, qtd_itens, total, data_nascimento FROM clientes 
 RIGHT JOIN pedidos ON clientes.id = pedidos.cliente_id WHERE clientes.id = 1;
+
+# n-n many-to-man
+CREATE TABLE materias (
+	id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    nome VARCHAR(100)
+);
+
+CREATE table estudante_materia (
+	estudante_id INT NOT NULL,
+    materia_id INT NOT NULL,
+    FOREIGN KEY (estudante_id) REFERENCES estudante(id),
+    FOREIGN KEY(materia_id) REFERENCES materias(id)
+);
+
+INSERT INTO materias(nome)
+VALUES	("Matemática"),
+		("Fisíca"),
+		("Biologia"),
+		("Geografia");
+
+INSERT INTO estudante_materia(estudante_id, materia_id)
+VALUES  (1,1),
+		(1,2),
+		(1,3),
+		(2,1),
+		(2,2),
+		(2,3),
+		(3,1),
+		(3,2);
+        
+SELECT * FROM estudante_materia;
+SELECT * FROM materias;
+SELECT * FROM estudante;
+
+SELECT estudante.nome, estudante.turma, materias.nome AS "Disciplinas" FROM estudante 
+INNER JOIN estudante_materia ON estudante_materia.estudante_id = estudante.id
+INNER JOIN materias ON materias.id = estudante_materia.materia_id;
+
+SELECT * FROM estudante
+JOIN estudante_materia ON estudante_materia.estudante_id = estudante.id;
+
+       
